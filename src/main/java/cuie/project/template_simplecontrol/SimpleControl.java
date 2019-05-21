@@ -1,10 +1,15 @@
-package ch.fhnw.cuie.project.template_simplecontrol;
+package cuie.project.template_simplecontrol;
 
 import java.util.List;
 import java.util.Locale;
 
+import javafx.animation.AnimationTimer;
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.css.CssMetaData;
 import javafx.css.SimpleStyleableObjectProperty;
 import javafx.css.Styleable;
@@ -22,6 +27,7 @@ import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.scene.text.TextBoundsType;
+import javafx.util.Duration;
 
 /**
  * ToDo: CustomControl kurz beschreiben
@@ -69,6 +75,24 @@ public class SimpleControl extends Region {
         }
     };
 
+    // Todo: Loeschen falls keine getaktete Animation benoetigt wird
+    private final BooleanProperty          blinking = new SimpleBooleanProperty(false);
+    private final ObjectProperty<Duration> pulse    = new SimpleObjectProperty<>(Duration.seconds(1.0));
+
+    private final AnimationTimer timer = new AnimationTimer() {
+        private long lastTimerCall;
+
+        @Override
+        public void handle(long now) {
+            if (now > lastTimerCall + (pulse.get().toMillis() * 1_000_000L)) {
+                performPeriodicTask();
+                lastTimerCall = now;
+            }
+        }
+    };
+
+    // Todo: alle Animationen und Timelines deklarieren
+
 
     // needed for resizing
     private Pane drawingPane;
@@ -77,6 +101,7 @@ public class SimpleControl extends Region {
         initializeSelf();
         initializeParts();
         initializeDrawingPane();
+        initializeAnimations();
         layoutParts();
         setupEventHandlers();
         setupValueChangeListeners();
@@ -112,6 +137,10 @@ public class SimpleControl extends Region {
         drawingPane.setPrefSize(ARTBOARD_WIDTH, ARTBOARD_HEIGHT);
     }
 
+    private void initializeAnimations(){
+        //ToDo: alle deklarierten Animationen initialisieren
+    }
+
     private void layoutParts() {
         // ToDo: alle Parts zur drawingPane hinzufügen
         drawingPane.getChildren().addAll(backgroundCircle, display);
@@ -125,13 +154,31 @@ public class SimpleControl extends Region {
 
     private void setupValueChangeListeners() {
         //ToDo: bei Bedarf ergänzen
+
+        // fuer die getaktete Animation
+        blinking.addListener((observable, oldValue, newValue) -> {
+            startClockedAnimation(newValue);
+        });
     }
+
 
     private void setupBindings() {
         //ToDo dieses Binding ersetzen
         display.textProperty().bind(valueProperty().asString(CH, "%.2f"));
     }
 
+    private void performPeriodicTask(){
+        //todo: ergaenzen mit dem was bei der getakteten Animation gemacht werden muss
+        // in der Regel: den Wert einer der Status-Properties aendern
+    }
+
+    private void startClockedAnimation(boolean start) {
+        if (start) {
+            timer.start();
+        } else {
+            timer.stop();
+        }
+    }
 
     //resize by scaling
     @Override
@@ -371,5 +418,29 @@ public class SimpleControl extends Region {
 
     public void setBaseColor(Color baseColor) {
         this.baseColor.set(baseColor);
+    }
+
+    public boolean isBlinking() {
+        return blinking.get();
+    }
+
+    public BooleanProperty blinkingProperty() {
+        return blinking;
+    }
+
+    public void setBlinking(boolean blinking) {
+        this.blinking.set(blinking);
+    }
+
+    public Duration getPulse() {
+        return pulse.get();
+    }
+
+    public ObjectProperty<Duration> pulseProperty() {
+        return pulse;
+    }
+
+    public void setPulse(Duration pulse) {
+        this.pulse.set(pulse);
     }
 }

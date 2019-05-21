@@ -1,4 +1,4 @@
-package ch.fhnw.cuie;
+package cuie;
 
 import org.junit.jupiter.api.Test;
 

@@ -1,11 +1,5 @@
-package ch.fhnw.cuie.project.template_businesscontrol.demo;
+package cuie.project.template_businesscontrol.demo;
 
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import javafx.geometry.Insets;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
@@ -14,7 +8,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 
-import ch.fhnw.cuie.project.template_businesscontrol.BusinessControl;
+import cuie.project.template_businesscontrol.BusinessControl;
 
 class DemoPane extends BorderPane {
     private BusinessControl businessControl;

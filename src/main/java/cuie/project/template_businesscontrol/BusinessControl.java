@@ -1,4 +1,4 @@
-package ch.fhnw.cuie.project.template_businesscontrol;
+package cuie.project.template_businesscontrol;
 
 import java.util.regex.Pattern;
 

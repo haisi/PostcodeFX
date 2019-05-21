@@ -1,10 +1,13 @@
+plugins {
+	id 'java'
+}
+
 group 'ch.fhnw'
-version '0.1-SNAPSHOT'
+version '0.1'
 
-apply plugin: 'java'
+sourceCompatibility = JavaVersion.VERSION_11
+targetCompatibility = JavaVersion.VERSION_11
 
-sourceCompatibility = 10
-targetCompatibility = 10
 compileJava.options.encoding = 'UTF-8'
 
 repositories {
@@ -20,9 +23,7 @@ sourceSets {
 }
 
 dependencies {
-	testCompile('org.junit.jupiter:junit-jupiter-api:5.3.2')
-	testCompile('org.junit.jupiter:junit-jupiter-params:5.3.2')
-	testRuntime('org.junit.jupiter:junit-jupiter-engine:5.3.2')
+	testImplementation('org.junit.jupiter:junit-jupiter:5.4.2')
 }
 
 test {
@@ -31,8 +32,3 @@ test {
 		events "passed", "skipped", "failed"
 	}
 }
-
-
-
-
-

@@ -1,4 +1,4 @@
-package ch.fhnw.cuie.project.template_businesscontrol.demo;
+package cuie.project.template_businesscontrol.demo;
 
 import javafx.application.Application;
 import javafx.scene.Scene;

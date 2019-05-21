@@ -1,4 +1,4 @@
-package ch.fhnw.cuie.project.template_simplecontrol.demo;
+package cuie.project.template_simplecontrol.demo;
 
 import javafx.geometry.Insets;
 import javafx.scene.control.ColorPicker;
@@ -7,9 +7,9 @@ import javafx.scene.control.Slider;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 
-import ch.fhnw.cuie.project.template_simplecontrol.SimpleControl;
+import cuie.project.template_simplecontrol.SimpleControl;
 
-class DemoPane extends BorderPane {
+public class DemoPane extends BorderPane {
 
     private final PresentationModel pm;
 
