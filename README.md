@@ -11,7 +11,7 @@
 ## Abgabe
 - **Mittwoch, 5.6.2019**, 20:42 Uhr
 
-- Die Abgabe erfolgt durch einen "Push" auf den Master-Branch Ihres GitHub-Repositories.
+- Die Abgabe erfolgt durch ein "Push" auf den Master-Branch Ihres GitHub-Repositories.
 
 
 ## Initiale Schritte
@@ -33,9 +33,9 @@ Entwerfen und implementieren Sie ein Custom Control für das OOP2-Projekt 'Charg
  - Das Custom Control soll den Benutzer beim jeweiligen Arbeitsschritt optimal unterstützen, beispielsweise durch eine hochspezialisierte Anzeige oder eine 
 effiziente Eingabemöglichkeit für einen/mehrere der Werte.
  - Falls ihr Custom Control ein _'einfaches, interaktives Anzeigeelement'_ ist, verwenden Sie bei der Implementierung die Struktur 
- wie im package `cuie.template_simplecontrol`.
+ wie im package `template_simplecontrol`.
  - Falls ihr Custom Control ein _'Business Control'_ ist, das z.B. eines der `TextFields` ersetzen soll, 
- verwenden Sie bei der Implementierung die Struktur wie im package `cuie.template_businesscontrol`. Schauen Sie sich dieses 
+ verwenden Sie bei der Implementierung die Struktur wie im package `template_businesscontrol`. Schauen Sie sich dieses 
  Template auf jeden Fall an. Es ist bereits recht viel Basis-Funktionalität enthalten.
 
 
@@ -69,10 +69,6 @@ Am Dienstag und Mittwoch Nachmittag stehen die Unterrichtsräume für cuie und o
  
 
 ## Bitte beachten Sie
- - Tragen Sie ihren Namen unter "Bearbeitet von" ein.
- 
- - Tragen Sie die Namen der OOP2-Teilnehmer ein in dessen OOP2-Projekte ihr Custom-Control erfolgreich integriert wurde.
- 
  - Es wird empfohlen das Projekt in 2-er Teams zu bearbeiten. 
    - Es wird erwartet, dass die Lösung gemeinsam erarbeitet und implementiert wird (Stichwort 'Pair-Programming').
  
@@ -119,4 +115,3 @@ Am Dienstag und Mittwoch Nachmittag stehen die Unterrichtsräume für cuie und o
  - Warten, warten, warten.
  
  Wenn alles gut gegangen ist sollte im Project-View der Java-Ordner unter src/main blau sein und der Java-Ordner unter src/test grün.
-
