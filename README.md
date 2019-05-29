@@ -2,7 +2,7 @@
 
 
 ## Bearbeitet von
- - Vorname, Nachname
+ - Hasan Selman, Kara
  
 ## Integriert in die OOP2-Projekte von
 - _**Ergänzen Sie hier welche OOP2-Teams Ihr Custom Control erfolgreich integriert haben.**_
