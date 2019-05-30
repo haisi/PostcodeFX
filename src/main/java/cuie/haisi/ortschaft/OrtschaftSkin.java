@@ -3,6 +3,7 @@ package cuie.haisi.ortschaft;
 import javafx.scene.control.ListView;
 import javafx.scene.control.SkinBase;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
 import javafx.stage.Popup;
 
@@ -60,7 +61,7 @@ class OrtschaftSkin extends SkinBase<OrtschaftControl> {
     }
 
     private void setupEventHandlers() {
-        ortField.focusedProperty().addListener((arg0, oldValue, newValue) -> {
+        ortField.focusedProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue) {
                 ortPopup.show(ortField.getScene().getWindow());
             } else {
@@ -68,7 +69,7 @@ class OrtschaftSkin extends SkinBase<OrtschaftControl> {
             }
         });
 
-        plzField.focusedProperty().addListener((arg0, oldValue, newValue) -> {
+        plzField.focusedProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue) {
                 plzPopup.show(plzField.getScene().getWindow());
             } else {
@@ -78,6 +79,16 @@ class OrtschaftSkin extends SkinBase<OrtschaftControl> {
     }
 
     private void setupValueChangedListeners() {
+        // TODO on ENTER use selected item and close popup
+//        ortList.setOnKeyPressed(key -> {
+//            if (key.getCode().equals(KeyCode.ENTER)) {
+//                ortField.textProperty().set(ortList.getSelectionModel().getSelectedItem());
+//                ortPopup.hide();
+//            } else if (key.getCode().equals(KeyCode.ESCAPE)) {
+//                ortPopup.hide();
+//            }
+//        });
+
         ortList.getSelectionModel().selectedItemProperty()
                 .addListener((observable, oldValue, newValue) -> {
                     ortField.textProperty().set(newValue);

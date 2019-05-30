@@ -20,6 +20,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Comparator;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.stream.Stream;
 
 /**
@@ -54,7 +56,7 @@ public class OrtschaftControl extends Control {
     // TODO change me
     private static final String FILE_NAME = "plz_de_dev.csv";
 //    private static final String FILE_NAME = "plz_de.csv";
-    private static final int MAX_DISTANCE = 10;
+    private static final int MAX_DISTANCE = 5;
 
     public OrtschaftControl() {
         initSelf();
@@ -112,7 +114,7 @@ public class OrtschaftControl extends Control {
             Platform.runLater(() -> {
                 // Filtering Ortschaften Namen with "fuzzy string search", i.e. approximate a match with Levenshtein
                 filteredOrtData.setPredicate(ort -> {
-                    System.out.println(searchValue);
+//                    System.out.println(searchValue);
                     // If filter text is empty, display all Orte.
                     if (searchValue == null || searchValue.isBlank()) {
                         // By default sort ASC by year of award
@@ -150,17 +152,21 @@ public class OrtschaftControl extends Control {
         }
         try (Stream<String> stream = Files.lines(dest.toAbsolutePath())) {
 //        try (Stream<String> stream = Files.lines(Paths.get(getClass().getResource(FILE_NAME).toExternalForm()))) {
+            Set<String> ortSet = new HashSet<>(15939);
+            Set<String> plzSet = new HashSet<>(8255);
             stream
                     .skip(1)
                     .map(line -> line.split(";"))
                     .forEach(tuple -> {
-                        ortData.add(tuple[0]);
-                        plzData.add(tuple[1]);
+                        ortSet.add(tuple[0]);
+                        plzSet.add(tuple[1]);
                     });
+
+            ortData.setAll(ortSet);
+            plzData.setAll(plzSet);
         } catch (IOException e) {
             e.printStackTrace();
         }
-
 
     }
 
