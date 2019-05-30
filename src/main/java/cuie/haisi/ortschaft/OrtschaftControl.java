@@ -98,6 +98,17 @@ public class OrtschaftControl extends Control {
             }
         });
 
+        plz.addListener((observable, oldValue, newValue) -> {
+            setPlzUserfacing(newValue);
+            setInvalid(false);
+        });
+
+        plzUserfacing.addListener((observable, oldValue, newValue) -> {
+            if (!isInvalid()) {
+                setPlz(newValue);
+            }
+        });
+
     }
 
     private void addValueChangeListener() {
