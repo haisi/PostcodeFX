@@ -1,6 +1,7 @@
 package cuie.haisi.ortschaft;
 
 import javafx.scene.control.ListView;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.SkinBase;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
@@ -11,6 +12,9 @@ import javafx.stage.Popup;
  * @author Hasan Selman Kara
  */
 class OrtschaftSkin extends SkinBase<OrtschaftControl> {
+
+    private ProgressIndicator progressPlz = new ProgressIndicator();
+    private ProgressIndicator progressOrt = new ProgressIndicator();
 
     private TextField ortField;
     private Popup ortPopup;
@@ -46,13 +50,13 @@ class OrtschaftSkin extends SkinBase<OrtschaftControl> {
         ortList = new ListView<>(getSkinnable().getSortedOrtData());
         ortPopup = new Popup();
         ortPopup.setAutoHide(true);
-        ortPopup.getContent().add(ortList);
+        ortPopup.getContent().addAll(progressOrt, ortList);
 
         plzField = new TextField();
         plzList = new ListView<>(getSkinnable().getSortedPlzData());
         plzPopup = new Popup();
         plzPopup.setAutoHide(true);
-        plzPopup.getContent().add(plzList);
+        plzPopup.getContent().addAll(progressPlz, plzList);
     }
 
     private void layoutParts() {
@@ -101,6 +105,11 @@ class OrtschaftSkin extends SkinBase<OrtschaftControl> {
     }
 
     private void setupBindings() {
+        progressOrt.visibleProperty().bind(getSkinnable().doneLoadingProperty().not());
+        progressPlz.visibleProperty().bind(getSkinnable().doneLoadingProperty().not());
+        ortList.visibleProperty().bind(getSkinnable().doneLoadingProperty());
+        plzList.visibleProperty().bind(getSkinnable().doneLoadingProperty());
+
         ortField.textProperty().bindBidirectional(getSkinnable().ortUserfacingProperty());
         plzField.textProperty().bindBidirectional(getSkinnable().plzUserfacingProperty());
     }

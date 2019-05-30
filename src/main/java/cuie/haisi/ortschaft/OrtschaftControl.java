@@ -19,9 +19,8 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Stream;
 
 /**
@@ -36,6 +35,8 @@ import java.util.stream.Stream;
  * @author Hasan Selman Kara
  */
 public class OrtschaftControl extends Control {
+
+    private final BooleanProperty doneLoading = new SimpleBooleanProperty(false);
 
     private final StringProperty plz = new SimpleStringProperty();
     private final StringProperty plzUserfacing = new SimpleStringProperty();
@@ -55,12 +56,20 @@ public class OrtschaftControl extends Control {
 
     // TODO change me
     private static final String FILE_NAME = "plz_de_dev.csv";
-//    private static final String FILE_NAME = "plz_de.csv";
+    //    private static final String FILE_NAME = "plz_de.csv";
     private static final int MAX_DISTANCE = 5;
 
     public OrtschaftControl() {
         initSelf();
-        readOrtschaftsData();
+        readOrtschaftsData()
+                .whenComplete((tuple, throwable) -> Platform.runLater(() -> {
+                    if (throwable == null) {
+                        ortData.setAll(tuple.ortSet);
+                        plzData.setAll(tuple.plzSet);
+                    } else {
+                        throwable.printStackTrace();
+                    }
+                }));
         addValueChangeListener();
     }
 
@@ -142,34 +151,47 @@ public class OrtschaftControl extends Control {
         });
     }
 
-    private void readOrtschaftsData() {
-        // TODO fix this URL & Path mess!
-        // TODO maybe load in different thread
-        URL url = getClass().getResource(FILE_NAME);
-        Path dest = null;
-        try {
-            dest = Paths.get(url.toURI());
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        }
-        try (Stream<String> stream = Files.lines(dest.toAbsolutePath())) {
+    private CompletableFuture<Tuple> readOrtschaftsData() {
+        return CompletableFuture.supplyAsync(() -> {
+            // TODO fix this URL & Path mess!
+            // TODO maybe load in different thread
+            URL url = getClass().getResource(FILE_NAME);
+            Path dest = null;
+            try {
+                dest = Paths.get(url.toURI());
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
+            }
+
+            final Set<String> ortSet = new HashSet<>(15939);
+            final Set<String> plzSet = new HashSet<>(8255);
+
+            try (Stream<String> stream = Files.lines(dest.toAbsolutePath())) {
 //        try (Stream<String> stream = Files.lines(Paths.get(getClass().getResource(FILE_NAME).toExternalForm()))) {
-            Set<String> ortSet = new HashSet<>(15939);
-            Set<String> plzSet = new HashSet<>(8255);
-            stream
-                    .skip(1)
-                    .map(line -> line.split(";"))
-                    .forEach(tuple -> {
-                        ortSet.add(tuple[0]);
-                        plzSet.add(tuple[1]);
-                    });
+                stream
+                        .skip(1)
+                        .map(line -> line.split(";"))
+                        .forEach(tuple -> {
+                            ortSet.add(tuple[0]);
+                            plzSet.add(tuple[1]);
+                        });
 
-            ortData.setAll(ortSet);
-            plzData.setAll(plzSet);
-        } catch (IOException e) {
-            e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return new Tuple(ortSet, plzSet);
+        });
+    }
+
+    private static final class Tuple {
+        final Set<String> ortSet;
+        final Set<String> plzSet;
+
+        private Tuple(Set<String> ortSet, Set<String> plzSet) {
+            this.ortSet = ortSet;
+            this.plzSet = plzSet;
         }
-
     }
 
     // ==================================================================
@@ -271,4 +293,15 @@ public class OrtschaftControl extends Control {
         this.invalid.set(invalid);
     }
 
+    public boolean isDoneLoading() {
+        return doneLoading.get();
+    }
+
+    public BooleanProperty doneLoadingProperty() {
+        return doneLoading;
+    }
+
+    public void setDoneLoading(boolean doneLoading) {
+        this.doneLoading.set(doneLoading);
+    }
 }
