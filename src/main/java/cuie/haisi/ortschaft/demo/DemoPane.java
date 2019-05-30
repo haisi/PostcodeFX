@@ -59,7 +59,7 @@ class DemoPane extends BorderPane {
     }
 
     private void setupBindings() {
-        ortField.textProperty().bindBidirectional(model.plzProperty());
+        plzField.textProperty().bindBidirectional(model.plzProperty());
         ortField.textProperty().bindBidirectional(model.ortProperty());
 
         businessControl.plzProperty().bindBidirectional(model.plzProperty());
