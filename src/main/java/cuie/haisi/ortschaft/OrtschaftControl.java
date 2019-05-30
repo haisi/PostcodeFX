@@ -35,7 +35,9 @@ import java.util.stream.Stream;
 public class OrtschaftControl extends Control {
 
     private final StringProperty plz = new SimpleStringProperty();
+    private final StringProperty plzUserfacing = new SimpleStringProperty();
     private final StringProperty ort = new SimpleStringProperty();
+    private final StringProperty ortUserfacing = new SimpleStringProperty();
 
     private final ObservableList<String> plzData = FXCollections.observableArrayList();
     private final FilteredList<String> filteredPlzData = new FilteredList<>(plzData, p -> true);
@@ -45,8 +47,10 @@ public class OrtschaftControl extends Control {
     private final FilteredList<String> filteredOrtData = new FilteredList<>(ortData, p -> true);
     private final SortedList<String> sortedOrtData = new SortedList<>(filteredOrtData);
 
+    // TODO no logic behind yet
     private static final PseudoClass INVALID_CLASS = PseudoClass.getPseudoClass("invalid");
 
+    // TODO change me
     private static final String FILE_NAME = "plz_de_dev.csv";
 //    private static final String FILE_NAME = "plz_de.csv";
     private static final int MAX_DISTANCE = 10;
@@ -64,6 +68,23 @@ public class OrtschaftControl extends Control {
 
     private void initSelf() {
         getStyleClass().add("ortschaft-control");
+
+        ort.addListener((observable, oldValue, newValue) -> {
+            setOrtUserfacing(newValue);
+            setInvalid(false);
+            // TODO for future
+//            setConvertible(false);
+        });
+
+        ortUserfacing.addListener((observable, oldValue, newValue) -> {
+//            setInvalid(); TODO check if invalid, i.e. if Ort exists
+//            setConvertible() TODO
+
+            if (!isInvalid()) {
+                setOrt(newValue);
+            }
+        });
+
     }
 
     private void addValueChangeListener() {
@@ -172,6 +193,30 @@ public class OrtschaftControl extends Control {
 
     public void setOrt(String ort) {
         this.ort.set(ort);
+    }
+
+    public String getPlzUserfacing() {
+        return plzUserfacing.get();
+    }
+
+    public StringProperty plzUserfacingProperty() {
+        return plzUserfacing;
+    }
+
+    public void setPlzUserfacing(String plzUserfacing) {
+        this.plzUserfacing.set(plzUserfacing);
+    }
+
+    public String getOrtUserfacing() {
+        return ortUserfacing.get();
+    }
+
+    public StringProperty ortUserfacingProperty() {
+        return ortUserfacing;
+    }
+
+    public void setOrtUserfacing(String ortUserfacing) {
+        this.ortUserfacing.set(ortUserfacing);
     }
 
     public ObservableList<String> getPlzData() {
