@@ -59,13 +59,11 @@ class DemoPane extends BorderPane {
     }
 
     private void setupBindings() {
-//        ageSlider.valueProperty().bindBidirectional(model.ageProperty());
-//        ortField.textProperty().bindBidirectional(model.age_LabelProperty());
-//        readOnlyBox.selectedProperty().bindBidirectional(model.age_readOnlyProperty());
-//        mandatoryBox.selectedProperty().bindBidirectional(model.age_mandatoryProperty());
+        ortField.textProperty().bindBidirectional(model.plzProperty());
+        ortField.textProperty().bindBidirectional(model.ortProperty());
 
-        businessControl.plzProperty().bind(model.plzProperty());
-        businessControl.ortProperty().bind(model.ortProperty());
+        businessControl.plzProperty().bindBidirectional(model.plzProperty());
+        businessControl.ortProperty().bindBidirectional(model.ortProperty());
     }
 
 }
