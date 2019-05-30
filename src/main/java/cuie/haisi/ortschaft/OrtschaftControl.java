@@ -114,12 +114,14 @@ public class OrtschaftControl extends Control {
             Platform.runLater(() -> {
                 // Filtering Ortschaften Namen with "fuzzy string search", i.e. approximate a match with Levenshtein
                 filteredOrtData.setPredicate(ort -> {
-//                    System.out.println(searchValue);
                     // If filter text is empty, display all Orte.
                     if (searchValue == null || searchValue.isBlank()) {
                         // By default sort ASC by year of award
                         sortedOrtData.setComparator(Comparator.comparing(String::toString));
                         return true;
+                    } else if (searchValue.length() < 4) {
+                        // Fuzzy search performs bad with short search terms
+                        return ort.toLowerCase().startsWith(searchValue.toLowerCase());
                     }
 
                     // Sort filtered data by ASC Levenshtein distance
