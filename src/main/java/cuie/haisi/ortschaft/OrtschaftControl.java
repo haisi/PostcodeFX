@@ -1,5 +1,6 @@
 package cuie.haisi.ortschaft;
 
+import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -89,44 +90,51 @@ public class OrtschaftControl extends Control {
 
     private void addValueChangeListener() {
 
-        // TODO take Ort value into account!
         plz.addListener((observable, oldValue, searchValue) -> {
-            // Filtering PLZ, if search term is the start of a string -> match
-            filteredPlzData.setPredicate(plz -> {
-                // If filter text is empty, display all PLZ.
-                if (searchValue == null || searchValue.isBlank()) {
-                    // By default sort ASC by year of award
-                    sortedPlzData.setComparator(Comparator.comparing(String::toString));
-                    return true;
-                }
+            // Must be run on GUI Thread: https://bugs.openjdk.java.net/browse/JDK-8081700
+            Platform.runLater(() -> {
+                // Filtering PLZ, if search term is the start of a string -> match
+                filteredPlzData.setPredicate(plz -> {
+                    // If filter text is empty, display all PLZ.
+                    if (searchValue == null || searchValue.isBlank()) {
+                        // By default sort ASC by year of award
+                        sortedPlzData.setComparator(Comparator.comparing(String::toString));
+                        return true;
+                    }
 
-                return plz.startsWith(searchValue);
+                    return plz.startsWith(searchValue);
+                });
             });
         });
 
-        // TODO take PLZ value into account!
         ort.addListener((observable, oldValue, searchValue) -> {
-            // Filtering Ortschaften Namen with "fuzzy string search", i.e. approximate a match with Levenshtein
-            filteredOrtData.setPredicate(ort -> {
-                // If filter text is empty, display all Orte.
-                if (searchValue == null || searchValue.isBlank()) {
-                    // By default sort ASC by year of award
-                    sortedOrtData.setComparator(Comparator.comparing(String::toString));
-                    return true;
-                }
+            // Must be run on GUI Thread: https://bugs.openjdk.java.net/browse/JDK-8081700
+            Platform.runLater(() -> {
+                // Filtering Ortschaften Namen with "fuzzy string search", i.e. approximate a match with Levenshtein
+                filteredOrtData.setPredicate(ort -> {
+                    System.out.println(searchValue);
+                    // If filter text is empty, display all Orte.
+                    if (searchValue == null || searchValue.isBlank()) {
+                        // By default sort ASC by year of award
+                        sortedOrtData.setComparator(Comparator.comparing(String::toString));
+                        return true;
+                    }
 
-                // Sort filtered data by ASC Levenshtein distance
-                String lowerCaseFilter = searchValue.toLowerCase();
-                sortedOrtData.setComparator((o1, o2) -> {
-                    int o1Distance = LevenshteinDistance.computeLevenshteinDistance(o1.toLowerCase(), lowerCaseFilter);
-                    int o2Distance = LevenshteinDistance.computeLevenshteinDistance(o2.toLowerCase(), lowerCaseFilter);
-                    return Integer.compare(o1Distance, o2Distance);
+                    // Sort filtered data by ASC Levenshtein distance
+                    String lowerCaseFilter = searchValue.toLowerCase();
+                    sortedOrtData.setComparator((o1, o2) -> {
+                        int o1Distance = LevenshteinDistance.computeLevenshteinDistance(o1.toLowerCase(), lowerCaseFilter);
+                        int o2Distance = LevenshteinDistance.computeLevenshteinDistance(o2.toLowerCase(), lowerCaseFilter);
+                        return Integer.compare(o1Distance, o2Distance);
+                    });
+
+                    // Only display entries with low Levenshtein distance
+                    int distance = LevenshteinDistance.computeLevenshteinDistance(ort.toLowerCase(), lowerCaseFilter);
+                    return distance < MAX_DISTANCE;
                 });
 
-                // Only display entries with low Levenshtein distance
-                int distance = LevenshteinDistance.computeLevenshteinDistance(ort.toLowerCase(), lowerCaseFilter);
-                return distance < MAX_DISTANCE;
             });
+
         });
     }
 
