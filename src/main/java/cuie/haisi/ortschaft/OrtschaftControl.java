@@ -66,6 +66,7 @@ public class OrtschaftControl extends Control {
                     if (throwable == null) {
                         ortData.setAll(tuple.ortSet);
                         plzData.setAll(tuple.plzSet);
+                        doneLoading.set(true);
                     } else {
                         throwable.printStackTrace();
                     }
