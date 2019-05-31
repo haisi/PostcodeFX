@@ -90,6 +90,9 @@ public class OrtschaftControl extends Control {
     private void initSelf() {
         getStyleClass().add("ortschaft-control");
 
+        sortedPlzData.setComparator(Comparator.comparing(String::toString));
+        sortedOrtData.setComparator(Comparator.comparing(String::toString));
+
         ort.addListener((observable, oldValue, newValue) -> {
             setOrtUserfacing(newValue);
             setInvalid_ort(false);
@@ -129,8 +132,6 @@ public class OrtschaftControl extends Control {
                 filteredPlzData.setPredicate(plz -> {
                     // If filter text is empty, display all PLZ.
                     if (searchValue == null || searchValue.isBlank()) {
-                        // By default sort ASC by year of award
-                        sortedPlzData.setComparator(Comparator.comparing(String::toString));
                         return true;
                     }
 
@@ -154,8 +155,6 @@ public class OrtschaftControl extends Control {
                 filteredOrtData.setPredicate(ort -> {
                     // If filter text is empty, display all Orte.
                     if (searchValue == null || searchValue.isBlank()) {
-                        // By default sort ASC by year of award
-                        sortedOrtData.setComparator(Comparator.comparing(String::toString));
                         return true;
                     } else if (searchValue.length() < 4) {
                         // Fuzzy search performs bad with short search terms
