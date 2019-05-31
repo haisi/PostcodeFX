@@ -201,22 +201,8 @@ public class OrtschaftControl extends Control {
                             String ort = tuple[0];
                             String plz = tuple[1];
 
-                            _ort2plz.compute(ort, (ortKey, plzs) -> {
-                                if (plzs == null) {
-                                    plzs = new ArrayList<>();
-                                }
-                                plzs.add(plz);
-                                return plzs;
-                            });
-
-                            _plz2ort.compute(plz, (plzKey, orte) -> {
-                                if (orte == null) {
-                                    orte = new ArrayList<>();
-                                }
-                                orte.add(ort);
-                                return orte;
-                            });
-
+                            createMapping(_ort2plz, ort, plz);
+                            createMapping(_plz2ort, plz, ort);
                         });
 
             } catch (IOException e) {
@@ -224,6 +210,16 @@ public class OrtschaftControl extends Control {
             }
 
             return new Tuple(_ort2plz, _plz2ort);
+        });
+    }
+
+    private static void createMapping(Map<String, List<String>> map, String key, String listItem) {
+        map.compute(key, (it, list) -> {
+            if (list == null) {
+                list = new ArrayList<>(1);
+            }
+            list.add(listItem);
+            return list;
         });
     }
 
