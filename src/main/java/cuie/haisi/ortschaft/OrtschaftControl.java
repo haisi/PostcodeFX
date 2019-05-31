@@ -182,21 +182,18 @@ public class OrtschaftControl extends Control {
 
     private CompletableFuture<Tuple> readOrtschaftsData() {
         return CompletableFuture.supplyAsync(() -> {
-            // TODO fix this URL & Path mess!
-            // TODO maybe load in different thread
             URL url = getClass().getResource(FILE_NAME);
-            Path dest = null;
+            final Path dest;
             try {
                 dest = Paths.get(url.toURI());
             } catch (URISyntaxException e) {
-                e.printStackTrace();
+                return new Tuple(new HashMap<>(), new HashMap<>());
             }
 
             final Map<String, List<String>> _ort2plz = new HashMap<>(15939);
             final Map<String, List<String>> _plz2ort = new HashMap<>(8255);
 
             try (Stream<String> stream = Files.lines(dest.toAbsolutePath())) {
-//        try (Stream<String> stream = Files.lines(Paths.get(getClass().getResource(FILE_NAME).toExternalForm()))) {
                 stream
                         .skip(1)
                         .map(line -> line.split(";"))
