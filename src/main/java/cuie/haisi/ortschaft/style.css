@@ -1,2 +1,19 @@
+.ortschaft-control:invalid {
+    -fx-background-color: #ffb49f;
+    -fx-border-color: red;
+    -fx-border-width: 0.1em;
+}
 
+.ortschaft-control:invalid-ort .ort {
+    -fx-text-fill: rgba(255, 50, 20, 0.77);
+    -fx-background-color: #ffbab1;
+    -fx-border-color: red;
+    -fx-border-width: 0.1em;
+}
 
+.ortschaft-control:invalid-plz .plz {
+    -fx-text-fill: rgba(255, 50, 20, 0.77);
+    -fx-background-color: #ffbab1;
+    -fx-border-color: red;
+    -fx-border-width: 0.1em;
+}

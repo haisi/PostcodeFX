@@ -30,6 +30,8 @@ import java.util.stream.Stream;
  * JavaFX CSS pseudo classes:
  * <ul>
  * <li>{@code invalid}</li>
+ * <li>{@code invalid-ort}</li>
+ * <li>{@code invalid-plz}</li>
  * </ul>
  *
  * @author Hasan Selman Kara
@@ -51,8 +53,9 @@ public class OrtschaftControl extends Control {
     private final FilteredList<String> filteredOrtData = new FilteredList<>(ortData, p -> true);
     private final SortedList<String> sortedOrtData = new SortedList<>(filteredOrtData);
 
-    // TODO no logic behind yet
     private static final PseudoClass INVALID_CLASS = PseudoClass.getPseudoClass("invalid");
+    private static final PseudoClass INVALID_ORT_CLASS = PseudoClass.getPseudoClass("invalid-ort");
+    private static final PseudoClass INVALID_PLZ_CLASS = PseudoClass.getPseudoClass("invalid-plz");
 
     // TODO change me
     private static final String FILE_NAME = "plz_de_dev.csv";
@@ -84,14 +87,12 @@ public class OrtschaftControl extends Control {
 
         ort.addListener((observable, oldValue, newValue) -> {
             setOrtUserfacing(newValue);
-            setInvalid(false);
-            // TODO for future
-//            setConvertible(false);
+            setInvalid_ort(false);
         });
 
         ortUserfacing.addListener((observable, oldValue, newValue) -> {
-//            setInvalid(); TODO check if invalid, i.e. if Ort exists
-//            setConvertible() TODO
+            setInvalid_ort(!ortData.contains(newValue));
+            setInvalid(isInvalid_ort() || isInvalid_plz());
 
             if (!isInvalid()) {
                 setOrt(newValue);
@@ -100,10 +101,13 @@ public class OrtschaftControl extends Control {
 
         plz.addListener((observable, oldValue, newValue) -> {
             setPlzUserfacing(newValue);
-            setInvalid(false);
+            setInvalid_plz(false);
         });
 
         plzUserfacing.addListener((observable, oldValue, newValue) -> {
+            setInvalid_plz(!plzData.contains(newValue));
+            setInvalid(isInvalid_ort() || isInvalid_plz());
+
             if (!isInvalid()) {
                 setPlz(newValue);
             }
@@ -217,6 +221,20 @@ public class OrtschaftControl extends Control {
         }
     };
 
+    private final BooleanProperty invalid_ort = new SimpleBooleanProperty(false) {
+        @Override
+        protected void invalidated() {
+            pseudoClassStateChanged(INVALID_ORT_CLASS, get());
+        }
+    };
+
+    private final BooleanProperty invalid_plz = new SimpleBooleanProperty(false) {
+        @Override
+        protected void invalidated() {
+            pseudoClassStateChanged(INVALID_PLZ_CLASS, get());
+        }
+    };
+
     // ==================================================================
     // Getters & Setters
     // ==================================================================
@@ -303,6 +321,30 @@ public class OrtschaftControl extends Control {
 
     public void setInvalid(boolean invalid) {
         this.invalid.set(invalid);
+    }
+
+    public boolean isInvalid_ort() {
+        return invalid_ort.get();
+    }
+
+    public BooleanProperty invalid_ortProperty() {
+        return invalid_ort;
+    }
+
+    public void setInvalid_ort(boolean invalid_ort) {
+        this.invalid_ort.set(invalid_ort);
+    }
+
+    public boolean isInvalid_plz() {
+        return invalid_plz.get();
+    }
+
+    public BooleanProperty invalid_plzProperty() {
+        return invalid_plz;
+    }
+
+    public void setInvalid_plz(boolean invalid_plz) {
+        this.invalid_plz.set(invalid_plz);
     }
 
     public boolean isDoneLoading() {
