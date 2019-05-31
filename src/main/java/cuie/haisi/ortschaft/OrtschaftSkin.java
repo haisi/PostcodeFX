@@ -48,6 +48,7 @@ class OrtschaftSkin extends SkinBase<OrtschaftControl> {
     private void initializeParts() {
         ortField = new TextField();
         ortField.getStyleClass().add("ort");
+        ortField.setPromptText("Ortschaft");
         ortList = new ListView<>(getSkinnable().getSortedOrtData());
         ortPopup = new Popup();
         ortPopup.setAutoHide(true);
@@ -55,6 +56,7 @@ class OrtschaftSkin extends SkinBase<OrtschaftControl> {
 
         plzField = new TextField();
         plzField.getStyleClass().add("plz");
+        plzField.setPromptText("PLZ");
         plzList = new ListView<>(getSkinnable().getSortedPlzData());
         plzPopup = new Popup();
         plzPopup.setAutoHide(true);
