@@ -45,10 +45,12 @@ public class OrtschaftControl extends Control {
     private final StringProperty ort = new SimpleStringProperty();
     private final StringProperty ortUserfacing = new SimpleStringProperty();
 
+    private Map<String, List<String>> plz2ort = new HashMap<>();
     private final ObservableList<String> plzData = FXCollections.observableArrayList();
     private final FilteredList<String> filteredPlzData = new FilteredList<>(plzData, p -> true);
     private final SortedList<String> sortedPlzData = new SortedList<>(filteredPlzData);
 
+    private Map<String, List<String>> ort2plz = new HashMap<>();
     private final ObservableList<String> ortData = FXCollections.observableArrayList();
     private final FilteredList<String> filteredOrtData = new FilteredList<>(ortData, p -> true);
     private final SortedList<String> sortedOrtData = new SortedList<>(filteredOrtData);
@@ -67,8 +69,11 @@ public class OrtschaftControl extends Control {
         readOrtschaftsData()
                 .whenComplete((tuple, throwable) -> Platform.runLater(() -> {
                     if (throwable == null) {
-                        ortData.setAll(tuple.ortSet);
-                        plzData.setAll(tuple.plzSet);
+                        ort2plz = tuple.ort2plz;
+                        plz2ort = tuple.plz2ort;
+
+                        ortData.setAll(tuple.ort2plz.keySet());
+                        plzData.setAll(tuple.plz2ort.keySet());
                         doneLoading.set(true);
                     } else {
                         throwable.printStackTrace();
@@ -137,6 +142,14 @@ public class OrtschaftControl extends Control {
         ort.addListener((observable, oldValue, searchValue) -> {
             // Must be run on GUI Thread: https://bugs.openjdk.java.net/browse/JDK-8081700
             Platform.runLater(() -> {
+                // Limit possible postcodes for the selected location
+                if (ort2plz.containsKey(searchValue)) {
+                    final var validPlzs = ort2plz.get(searchValue);
+                    filteredPlzData.setPredicate(plz -> {
+                        return validPlzs.contains(plz);
+                    });
+                }
+
                 // Filtering Ortschaften Namen with "fuzzy string search", i.e. approximate a match with Levenshtein
                 filteredOrtData.setPredicate(ort -> {
                     // If filter text is empty, display all Orte.
@@ -179,8 +192,8 @@ public class OrtschaftControl extends Control {
                 e.printStackTrace();
             }
 
-            final Set<String> ortSet = new HashSet<>(15939);
-            final Set<String> plzSet = new HashSet<>(8255);
+            final Map<String, List<String>> _ort2plz = new HashMap<>(15939);
+            final Map<String, List<String>> _plz2ort = new HashMap<>(8255);
 
             try (Stream<String> stream = Files.lines(dest.toAbsolutePath())) {
 //        try (Stream<String> stream = Files.lines(Paths.get(getClass().getResource(FILE_NAME).toExternalForm()))) {
@@ -188,25 +201,42 @@ public class OrtschaftControl extends Control {
                         .skip(1)
                         .map(line -> line.split(";"))
                         .forEach(tuple -> {
-                            ortSet.add(tuple[0]);
-                            plzSet.add(tuple[1]);
+                            String ort = tuple[0];
+                            String plz = tuple[1];
+
+                            _ort2plz.compute(ort, (ortKey, plzs) -> {
+                                if (plzs == null) {
+                                    plzs = new ArrayList<>();
+                                }
+                                plzs.add(plz);
+                                return plzs;
+                            });
+
+                            _plz2ort.compute(plz, (plzKey, orte) -> {
+                                if (orte == null) {
+                                    orte = new ArrayList<>();
+                                }
+                                orte.add(ort);
+                                return orte;
+                            });
+
                         });
 
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
-            return new Tuple(ortSet, plzSet);
+            return new Tuple(_ort2plz, _plz2ort);
         });
     }
 
     private static final class Tuple {
-        final Set<String> ortSet;
-        final Set<String> plzSet;
+        final Map<String, List<String>> ort2plz;
+        final Map<String, List<String>> plz2ort;
 
-        private Tuple(Set<String> ortSet, Set<String> plzSet) {
-            this.ortSet = ortSet;
-            this.plzSet = plzSet;
+        private Tuple(Map<String, List<String>> ort2plz, Map<String, List<String>> plz2ort) {
+            this.ort2plz = ort2plz;
+            this.plz2ort = plz2ort;
         }
     }
 
