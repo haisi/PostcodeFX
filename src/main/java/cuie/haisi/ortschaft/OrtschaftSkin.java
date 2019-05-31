@@ -99,11 +99,17 @@ class OrtschaftSkin extends SkinBase<OrtschaftControl> {
 
         ortList.getSelectionModel().selectedItemProperty()
                 .addListener((observable, oldValue, newValue) -> {
+                    if (newValue == null || newValue.isEmpty()) {
+                        return;
+                    }
                     ortField.textProperty().set(newValue);
                 });
 
         plzList.getSelectionModel().selectedItemProperty()
                 .addListener((observable, oldValue, newValue) -> {
+                    if (newValue == null || newValue.isEmpty()) {
+                        return;
+                    }
                     plzField.textProperty().set(newValue);
                 });
     }
