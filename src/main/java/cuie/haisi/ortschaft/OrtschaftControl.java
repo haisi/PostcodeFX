@@ -59,10 +59,7 @@ public class OrtschaftControl extends Control {
     private static final PseudoClass INVALID_ORT_CLASS = PseudoClass.getPseudoClass("invalid-ort");
     private static final PseudoClass INVALID_PLZ_CLASS = PseudoClass.getPseudoClass("invalid-plz");
 
-    // TODO change me
-    private static final String FILE_NAME = "plz_de_dev.csv";
-    //    private static final String FILE_NAME = "plz_de.csv";
-    private static final int MAX_DISTANCE = 5;
+    private static final String FILE_NAME = "plz_de.csv";
 
     public OrtschaftControl() {
         initSelf();
