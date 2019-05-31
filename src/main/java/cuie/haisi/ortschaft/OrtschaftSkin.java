@@ -87,15 +87,19 @@ class OrtschaftSkin extends SkinBase<OrtschaftControl> {
     }
 
     private void setupValueChangedListeners() {
-        // TODO on ENTER use selected item and close popup
-//        ortList.setOnKeyPressed(key -> {
-//            if (key.getCode().equals(KeyCode.ENTER)) {
-//                ortField.textProperty().set(ortList.getSelectionModel().getSelectedItem());
-//                ortPopup.hide();
-//            } else if (key.getCode().equals(KeyCode.ESCAPE)) {
-//                ortPopup.hide();
-//            }
-//        });
+        ortList.setOnKeyPressed(key -> {
+            ortList.requestFocus();
+            if (key.getCode().equals(KeyCode.ESCAPE)) {
+                ortPopup.hide();
+            }
+        });
+
+        plzList.setOnKeyPressed(key -> {
+            plzList.requestFocus();
+            if (key.getCode().equals(KeyCode.ESCAPE)) {
+                plzPopup.hide();
+            }
+        });
 
         ortList.getSelectionModel().selectedItemProperty()
                 .addListener((observable, oldValue, newValue) -> {
