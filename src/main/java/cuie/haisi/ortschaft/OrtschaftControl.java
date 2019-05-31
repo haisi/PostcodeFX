@@ -156,22 +156,8 @@ public class OrtschaftControl extends Control {
                     // If filter text is empty, display all Orte.
                     if (searchValue == null || searchValue.isBlank()) {
                         return true;
-                    } else if (searchValue.length() < 4) {
-                        // Fuzzy search performs bad with short search terms
-                        return ort.toLowerCase().startsWith(searchValue.toLowerCase());
                     }
-
-                    // Sort filtered data by ASC Levenshtein distance
-                    String lowerCaseFilter = searchValue.toLowerCase();
-                    sortedOrtData.setComparator((o1, o2) -> {
-                        int o1Distance = LevenshteinDistance.computeLevenshteinDistance(o1.toLowerCase(), lowerCaseFilter);
-                        int o2Distance = LevenshteinDistance.computeLevenshteinDistance(o2.toLowerCase(), lowerCaseFilter);
-                        return Integer.compare(o1Distance, o2Distance);
-                    });
-
-                    // Only display entries with low Levenshtein distance
-                    int distance = LevenshteinDistance.computeLevenshteinDistance(ort.toLowerCase(), lowerCaseFilter);
-                    return distance < MAX_DISTANCE;
+                    return ort.toLowerCase().startsWith(searchValue.toLowerCase());
                 });
 
             });
