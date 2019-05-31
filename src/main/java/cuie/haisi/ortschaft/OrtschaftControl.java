@@ -125,7 +125,7 @@ public class OrtschaftControl extends Control {
 
     private void addValueChangeListener() {
 
-        plz.addListener((observable, oldValue, searchValue) -> {
+        plzUserfacing.addListener((observable, oldValue, searchValue) -> {
             // Must be run on GUI Thread: https://bugs.openjdk.java.net/browse/JDK-8081700
             Platform.runLater(() -> {
                 // Filtering PLZ, if search term is the start of a string -> match
@@ -140,7 +140,7 @@ public class OrtschaftControl extends Control {
             });
         });
 
-        ort.addListener((observable, oldValue, searchValue) -> {
+        ortUserfacing.addListener((observable, oldValue, searchValue) -> {
             // Must be run on GUI Thread: https://bugs.openjdk.java.net/browse/JDK-8081700
             Platform.runLater(() -> {
                 // Limit possible postcodes for the selected location
