@@ -13,6 +13,7 @@ class DemoPane extends BorderPane {
 
     private TextField ortField;
     private TextField plzField;
+    private CheckBox editableCheckBox;
 
     private OrtschaftPresentationModel model;
 
@@ -32,6 +33,7 @@ class DemoPane extends BorderPane {
 
         ortField = new TextField();
         plzField = new TextField();
+        editableCheckBox = new CheckBox();
     }
 
     private void layoutControls() {
@@ -39,7 +41,8 @@ class DemoPane extends BorderPane {
         VBox box = new VBox(10,
                 new Label("Business Control Properties"),
                 new Label("Ort"), ortField,
-                new Label("PLZ"), plzField);
+                new Label("PLZ"), plzField,
+                new Label("Editable"), editableCheckBox);
         box.setPadding(new Insets(10));
         box.setSpacing(10);
         setRight(box);
@@ -51,9 +54,11 @@ class DemoPane extends BorderPane {
     private void setupBindings() {
         plzField.textProperty().bindBidirectional(model.plzProperty());
         ortField.textProperty().bindBidirectional(model.ortProperty());
+        editableCheckBox.selectedProperty().bindBidirectional(model.editableProperty());
 
         businessControl.plzProperty().bindBidirectional(model.plzProperty());
         businessControl.ortProperty().bindBidirectional(model.ortProperty());
+        businessControl.editableProperty().bind(model.editableProperty());
     }
 
 }

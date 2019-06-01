@@ -1,12 +1,11 @@
 package cuie.haisi.ortschaft;
 
 import javafx.geometry.Point2D;
-import javafx.scene.control.ListView;
-import javafx.scene.control.ProgressIndicator;
-import javafx.scene.control.SkinBase;
-import javafx.scene.control.TextField;
+import javafx.geometry.Pos;
+import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Popup;
 
 /**
@@ -18,10 +17,12 @@ class OrtschaftSkin extends SkinBase<OrtschaftControl> {
     private ProgressIndicator progressOrt = new ProgressIndicator();
 
     private TextField ortField;
+    private Label ortLabel;
     private Popup ortPopup;
     private ListView<String> ortList;
 
     private TextField plzField;
+    private Label plzLabel;
     private Popup plzPopup;
     private ListView<String> plzList;
 
@@ -50,6 +51,8 @@ class OrtschaftSkin extends SkinBase<OrtschaftControl> {
         ortField = new TextField();
         ortField.getStyleClass().add("ort");
         ortField.setPromptText("Ortschaft");
+        ortLabel = new Label();
+        ortLabel.getStyleClass().add("ort-label");
         ortList = new ListView<>(getSkinnable().getSortedOrtData());
         ortPopup = new Popup();
         ortPopup.setAutoHide(true);
@@ -58,6 +61,8 @@ class OrtschaftSkin extends SkinBase<OrtschaftControl> {
         plzField = new TextField();
         plzField.getStyleClass().add("plz");
         plzField.setPromptText("PLZ");
+        plzLabel = new Label();
+        plzLabel.getStyleClass().add("plz-label");
         plzList = new ListView<>(getSkinnable().getSortedPlzData());
         plzPopup = new Popup();
         plzPopup.setAutoHide(true);
@@ -65,7 +70,11 @@ class OrtschaftSkin extends SkinBase<OrtschaftControl> {
     }
 
     private void layoutParts() {
-        var hbox = new HBox(10, ortField, plzField);
+        var hbox = new HBox(10, new StackPane(ortField, ortLabel), new StackPane(plzField, plzLabel));
+
+        StackPane.setAlignment(plzLabel, Pos.CENTER_LEFT);
+        StackPane.setAlignment(ortLabel, Pos.CENTER_LEFT);
+
         getChildren().add(hbox);
     }
 
@@ -127,12 +136,25 @@ class OrtschaftSkin extends SkinBase<OrtschaftControl> {
     }
 
     private void setupBindings() {
+        // Bind visibility of listview and prgress indicator
         progressOrt.visibleProperty().bind(getSkinnable().doneLoadingProperty().not());
         progressPlz.visibleProperty().bind(getSkinnable().doneLoadingProperty().not());
         ortList.visibleProperty().bind(getSkinnable().doneLoadingProperty());
         plzList.visibleProperty().bind(getSkinnable().doneLoadingProperty());
 
+        // Bind 'editable' visibility
+        ortField.visibleProperty().bind(getSkinnable().editableProperty());
+        ortLabel.visibleProperty().bind(getSkinnable().editableProperty().not());
+
+        plzField.visibleProperty().bind(getSkinnable().editableProperty());
+        plzLabel.visibleProperty().bind(getSkinnable().editableProperty().not());
+
+        // Bind Ort values
         ortField.textProperty().bindBidirectional(getSkinnable().ortUserfacingProperty());
+        ortLabel.textProperty().bind(getSkinnable().ortUserfacingProperty());
+
+        // Bind PLZ values
         plzField.textProperty().bindBidirectional(getSkinnable().plzUserfacingProperty());
+        plzLabel.textProperty().bind(getSkinnable().plzUserfacingProperty());
     }
 }

@@ -39,6 +39,7 @@ import java.util.stream.Stream;
 public class OrtschaftControl extends Control {
 
     private final BooleanProperty doneLoading = new SimpleBooleanProperty(false);
+    private final BooleanProperty editable = new SimpleBooleanProperty(false);
 
     private final StringProperty plz = new SimpleStringProperty();
     private final StringProperty plzUserfacing = new SimpleStringProperty();
@@ -362,5 +363,17 @@ public class OrtschaftControl extends Control {
 
     public void setDoneLoading(boolean doneLoading) {
         this.doneLoading.set(doneLoading);
+    }
+
+    public boolean isEditable() {
+        return editable.get();
+    }
+
+    public BooleanProperty editableProperty() {
+        return editable;
+    }
+
+    public void setEditable(boolean editable) {
+        this.editable.set(editable);
     }
 }
