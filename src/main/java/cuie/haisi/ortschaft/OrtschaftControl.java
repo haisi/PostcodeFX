@@ -126,6 +126,16 @@ public class OrtschaftControl extends Control {
         plzUserfacing.addListener((observable, oldValue, searchValue) -> {
             // Must be run on GUI Thread: https://bugs.openjdk.java.net/browse/JDK-8081700
             Platform.runLater(() -> {
+                // Limit possible areas for the selected zipcode
+                if (plz2ort.containsKey(searchValue)) {
+                    final var validOrte = plz2ort.get(searchValue);
+                    if (validOrte.size() == 1) {
+                        setOrt(validOrte.get(0));
+                    } else {
+                        filteredOrtData.setPredicate(validOrte::contains);
+                    }
+                }
+
                 // Filtering PLZ, if search term is the start of a string -> match
                 filteredPlzData.setPredicate(plz -> {
                     // If filter text is empty, display all PLZ.
@@ -144,9 +154,7 @@ public class OrtschaftControl extends Control {
                 // Limit possible postcodes for the selected location
                 if (ort2plz.containsKey(searchValue)) {
                     final var validPlzs = ort2plz.get(searchValue);
-                    filteredPlzData.setPredicate(plz -> {
-                        return validPlzs.contains(plz);
-                    });
+                    filteredPlzData.setPredicate(validPlzs::contains);
                 }
 
                 // Filtering Ortschaften Namen with "fuzzy string search", i.e. approximate a match with Levenshtein
