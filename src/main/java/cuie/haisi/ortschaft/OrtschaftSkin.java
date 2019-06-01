@@ -1,5 +1,6 @@
 package cuie.haisi.ortschaft;
 
+import javafx.geometry.Point2D;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.SkinBase;
@@ -71,7 +72,7 @@ class OrtschaftSkin extends SkinBase<OrtschaftControl> {
     private void setupEventHandlers() {
         ortField.focusedProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue) {
-                ortPopup.show(ortField.getScene().getWindow());
+                showPopup(ortPopup, ortField);
             } else {
                 ortPopup.hide();
             }
@@ -79,11 +80,18 @@ class OrtschaftSkin extends SkinBase<OrtschaftControl> {
 
         plzField.focusedProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue) {
-                plzPopup.show(plzField.getScene().getWindow());
+                showPopup(plzPopup, plzField);
             } else {
                 plzPopup.hide();
             }
         });
+    }
+
+    private void showPopup(Popup popup, TextField textField) {
+        Point2D txtCoords = textField.localToScene(0.0, 0.0);
+        popup.show(textField,
+                txtCoords.getX() + textField.getScene().getX() + textField.getScene().getWindow().getX(),
+                txtCoords.getY() + textField.getScene().getY() + textField.getScene().getWindow().getY() + textField.getHeight());
     }
 
     private void setupValueChangedListeners() {
