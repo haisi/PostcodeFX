@@ -17,3 +17,23 @@
     -fx-border-color: red;
     -fx-border-width: 0.1em;
 }
+
+.ortschaft-control .ort-label {
+    -fx-font-weight: bold;
+}
+
+.ortschaft-control .plz-label {
+    -fx-font-weight: bold;
+}
+
+.ortschaft-control:invalid-ort .ort-label {
+    -fx-text-fill: rgba(255, 50, 20, 0.77);
+    -fx-font-weight: bold;
+    -fx-font-style: italic;
+}
+
+.ortschaft-control:invalid-plz .plz-label {
+    -fx-text-fill: rgba(255, 50, 20, 0.77);
+    -fx-font-weight: bold;
+    -fx-font-style: italic;
+}
