@@ -94,6 +94,7 @@ public class OrtschaftControl extends Control {
         ort.addListener((observable, oldValue, newValue) -> {
             setOrtUserfacing(newValue);
             setInvalid_ort(false);
+            setInvalid(false);
         });
 
         ortUserfacing.addListener((observable, oldValue, newValue) -> {
@@ -108,6 +109,7 @@ public class OrtschaftControl extends Control {
         plz.addListener((observable, oldValue, newValue) -> {
             setPlzUserfacing(newValue);
             setInvalid_plz(false);
+            setInvalid(false);
         });
 
         plzUserfacing.addListener((observable, oldValue, newValue) -> {
