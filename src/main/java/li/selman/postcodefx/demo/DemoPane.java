@@ -1,6 +1,6 @@
-package cuie.haisi.ortschaft.demo;
+package li.selman.postcodefx.demo;
 
-import cuie.haisi.ortschaft.OrtschaftControl;
+import li.selman.postcodefx.OrtschaftControl;
 import javafx.geometry.Insets;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;

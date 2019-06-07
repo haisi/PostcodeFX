@@ -1,4 +1,4 @@
-package cuie.haisi.ortschaft;
+package li.selman.postcodefx;
 
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;

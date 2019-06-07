@@ -1,4 +1,4 @@
-package cuie.haisi.ortschaft.demo;
+package li.selman.postcodefx.demo;
 
 import javafx.application.Application;
 import javafx.scene.Scene;

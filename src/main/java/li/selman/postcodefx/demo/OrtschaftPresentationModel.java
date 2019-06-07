@@ -1,4 +1,4 @@
-package cuie.haisi.ortschaft.demo;
+package li.selman.postcodefx.demo;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;

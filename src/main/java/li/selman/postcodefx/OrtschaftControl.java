@@ -1,4 +1,4 @@
-package cuie.haisi.ortschaft;
+package li.selman.postcodefx;
 
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
