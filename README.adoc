@@ -10,3 +10,12 @@ Furthermore, this project showcases the powerful "skin", "control" and "binding"
 This project was part of an assignment of the https://www.fhnw.ch/de/studium/module/9200607[CUIE lecture]
 at https://www.fhnw.ch[FHNW] by https://github.com/DieterHolz[@DieterHolz].
 ====
+
+== Features
+
+image::screenshot.PNG[Screenshot of the demo app]
+
+* Filtering
+* Validation
+* CSS pseudo classes for invalid state
+* Read-only view
