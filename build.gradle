@@ -26,6 +26,7 @@ dependencies {
 	testImplementation('org.junit.jupiter:junit-jupiter:5.4.2')
     testImplementation("org.testfx:testfx-core:4.0.15-alpha")
     testImplementation("org.testfx:testfx-junit5:4.0.15-alpha")
+    testImplementation "org.testfx:openjfx-monocle:jdk-11+26"
     testImplementation("org.assertj:assertj-core:3.12.2")
 }
 
