@@ -16,14 +16,14 @@ class OrtschaftSkin extends SkinBase<OrtschaftControl> {
     private ProgressIndicator progressPlz = new ProgressIndicator();
     private ProgressIndicator progressOrt = new ProgressIndicator();
 
-    private TextField ortField;
-    private Label ortLabel;
-    private Popup ortPopup;
+    private TextField        ortField;
+    private Label            ortLabel;
+    private Popup            ortPopup;
     private ListView<String> ortList;
 
-    private TextField plzField;
-    private Label plzLabel;
-    private Popup plzPopup;
+    private TextField        plzField;
+    private Label            plzLabel;
+    private Popup            plzPopup;
     private ListView<String> plzList;
 
     private static final String FONTS_CSS = "/fonts/fonts.css";
@@ -100,7 +100,9 @@ class OrtschaftSkin extends SkinBase<OrtschaftControl> {
         Point2D txtCoords = textField.localToScene(0.0, 0.0);
         popup.show(textField,
                 txtCoords.getX() + textField.getScene().getX() + textField.getScene().getWindow().getX(),
-                txtCoords.getY() + textField.getScene().getY() + textField.getScene().getWindow().getY() + textField.getHeight());
+                txtCoords.getY() + textField.getScene().getY() + textField.getScene()
+                                                                          .getWindow()
+                                                                          .getY() + textField.getHeight());
     }
 
     private void setupValueChangedListeners() {
@@ -119,20 +121,20 @@ class OrtschaftSkin extends SkinBase<OrtschaftControl> {
         });
 
         ortList.getSelectionModel().selectedItemProperty()
-                .addListener((observable, oldValue, newValue) -> {
-                    if (newValue == null || newValue.isEmpty()) {
-                        return;
-                    }
-                    ortField.textProperty().set(newValue);
-                });
+               .addListener((observable, oldValue, newValue) -> {
+                   if (newValue == null || newValue.isEmpty()) {
+                       return;
+                   }
+                   ortField.textProperty().set(newValue);
+               });
 
         plzList.getSelectionModel().selectedItemProperty()
-                .addListener((observable, oldValue, newValue) -> {
-                    if (newValue == null || newValue.isEmpty()) {
-                        return;
-                    }
-                    plzField.textProperty().set(newValue);
-                });
+               .addListener((observable, oldValue, newValue) -> {
+                   if (newValue == null || newValue.isEmpty()) {
+                       return;
+                   }
+                   plzField.textProperty().set(newValue);
+               });
     }
 
     private void setupBindings() {

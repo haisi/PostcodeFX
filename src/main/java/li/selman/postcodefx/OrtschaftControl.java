@@ -39,24 +39,24 @@ import java.util.stream.Stream;
 public class OrtschaftControl extends Control {
 
     private final BooleanProperty doneLoading = new SimpleBooleanProperty(false);
-    private final BooleanProperty editable = new SimpleBooleanProperty(false);
+    private final BooleanProperty editable    = new SimpleBooleanProperty(false);
 
-    private final StringProperty plz = new SimpleStringProperty();
+    private final StringProperty plz           = new SimpleStringProperty();
     private final StringProperty plzUserfacing = new SimpleStringProperty();
-    private final StringProperty ort = new SimpleStringProperty();
+    private final StringProperty ort           = new SimpleStringProperty();
     private final StringProperty ortUserfacing = new SimpleStringProperty();
 
-    private Map<String, List<String>> plz2ort = new HashMap<>();
-    private final ObservableList<String> plzData = FXCollections.observableArrayList();
-    private final FilteredList<String> filteredPlzData = new FilteredList<>(plzData, p -> true);
-    private final SortedList<String> sortedPlzData = new SortedList<>(filteredPlzData);
+    private       Map<String, List<String>> plz2ort         = new HashMap<>();
+    private final ObservableList<String>    plzData         = FXCollections.observableArrayList();
+    private final FilteredList<String>      filteredPlzData = new FilteredList<>(plzData, p -> true);
+    private final SortedList<String>        sortedPlzData   = new SortedList<>(filteredPlzData);
 
-    private Map<String, List<String>> ort2plz = new HashMap<>();
-    private final ObservableList<String> ortData = FXCollections.observableArrayList();
-    private final FilteredList<String> filteredOrtData = new FilteredList<>(ortData, p -> true);
-    private final SortedList<String> sortedOrtData = new SortedList<>(filteredOrtData);
+    private       Map<String, List<String>> ort2plz         = new HashMap<>();
+    private final ObservableList<String>    ortData         = FXCollections.observableArrayList();
+    private final FilteredList<String>      filteredOrtData = new FilteredList<>(ortData, p -> true);
+    private final SortedList<String>        sortedOrtData   = new SortedList<>(filteredOrtData);
 
-    private static final PseudoClass INVALID_CLASS = PseudoClass.getPseudoClass("invalid");
+    private static final PseudoClass INVALID_CLASS     = PseudoClass.getPseudoClass("invalid");
     private static final PseudoClass INVALID_ORT_CLASS = PseudoClass.getPseudoClass("invalid-ort");
     private static final PseudoClass INVALID_PLZ_CLASS = PseudoClass.getPseudoClass("invalid-plz");
 

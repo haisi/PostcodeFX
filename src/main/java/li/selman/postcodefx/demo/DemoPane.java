@@ -13,7 +13,7 @@ class DemoPane extends BorderPane {
 
     private TextField ortField;
     private TextField plzField;
-    private CheckBox editableCheckBox;
+    private CheckBox  editableCheckBox;
 
     private OrtschaftPresentationModel model;
 

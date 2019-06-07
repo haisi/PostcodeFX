@@ -10,8 +10,8 @@ import javafx.beans.property.StringProperty;
  */
 public class OrtschaftPresentationModel {
 
-    private final StringProperty plz = new SimpleStringProperty();
-    private final StringProperty ort = new SimpleStringProperty();
+    private final StringProperty  plz      = new SimpleStringProperty();
+    private final StringProperty  ort      = new SimpleStringProperty();
     private final BooleanProperty editable = new SimpleBooleanProperty(true);
 
     public String getPlz() {
