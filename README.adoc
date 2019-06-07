@@ -1,0 +1,6 @@
+= JavaFX Business Control for City and Postcode Selection
+
+Cities and postcodes have a `1 to n` relation.
+In order to help display and select these to values, I developed a custom JavaFX business control.
+
+Furthermore, this project showcases the powerful "skin", "control" and "binding" concepts of JavaFX.
