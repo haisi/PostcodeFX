@@ -17,9 +17,12 @@
 
 package li.selman.postcodefx;
 
-import javafx.application.Platform;
 import javafx.scene.control.TextField;
 import org.testfx.api.FxRobot;
+import org.testfx.util.WaitForAsyncUtils;
+
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 
 /**
  * @author Hasan Selman Kara
@@ -33,7 +36,21 @@ abstract class BaseTestRobot {
     }
 
     protected void runInJavaFxThread(Runnable runnable) {
-        Platform.runLater(runnable);
+        var future = WaitForAsyncUtils.asyncFx(runnable);
+        try {
+            future.get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+    }
+
+    protected <T> T runInJavaFxThread(Callable<T> callable) {
+        var future = WaitForAsyncUtils.asyncFx(callable);
+        try {
+            return future.get();
+        } catch (InterruptedException | ExecutionException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     protected void writeTextfield(final String query, final String text) {
